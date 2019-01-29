@@ -1,0 +1,126 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://penguin2.png" type="Texture" id=1]
+[ext_resource path="res://Objects/Weapons/Weapon.tscn" type="PackedScene" id=2]
+
+[sub_resource type="GDScript" id=2]
+
+resource_name = "Penguin.gd"
+script/source = "extends KinematicBody2D
+
+var velocity = Vector2()
+export (int) var speed
+export (int) var max_speed
+export (int) var air_speed
+export (int) var jumpForce
+var facingDirection = 1
+const GRAVITY = 2500
+
+onready var weapon = get_node(\"Visual/WeaponPos/Weapon\")
+
+func _ready():
+	weapon.player = self
+	pass
+
+func get_input():
+	velocity.x = 0
+	if Input.is_action_pressed(\"ui_left\"):
+		velocity.x = -speed
+		facingDirection = -1
+	elif Input.is_action_pressed(\"ui_right\"):
+		velocity.x = speed
+		facingDirection = 1
+	if Input.is_action_just_pressed(\"ui_up\") and is_on_floor():
+		velocity.y = -jumpForce
+	if Input.is_action_pressed(\"Attack\"):
+		weapon.attack()
+	flip_visuals()
+	pass
+
+func flip_visuals():
+	if $Visual.scale.x != facingDirection:
+		$Visual.scale.x = facingDirection
+	pass
+
+func _process(delta):
+	get_input()
+	pass
+
+func _physics_process(delta):
+	if !is_on_floor():
+		velocity.y += GRAVITY * delta
+		velocity.y = clamp(velocity.y,-jumpForce*2, GRAVITY)
+	move_and_slide(velocity,Vector2(0,-1))
+	pass
+"
+_sections_unfolded = [ "Resource" ]
+
+[sub_resource type="CapsuleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 25.2543
+height = 80.4824
+
+[node name="Penguin" type="KinematicBody2D"]
+
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+collision/safe_margin = 0.08
+script = SubResource( 2 )
+speed = 300
+max_speed = 600
+air_speed = 150
+jumpForce = 600
+
+[node name="Camera" type="Camera2D" parent="." index="0"]
+
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 1, 1 )
+limit_left = -10000000
+limit_top = -10000000
+limit_right = 10000000
+limit_bottom = 10000000
+limit_smoothed = false
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = true
+smoothing_speed = 5.0
+offset_v = 0.0
+offset_h = 0.0
+drag_margin_left = 0.2
+drag_margin_top = 0.2
+drag_margin_right = 0.2
+drag_margin_bottom = 0.2
+editor_draw_screen = true
+editor_draw_limits = false
+editor_draw_drag_margin = false
+_sections_unfolded = [ "Smoothing" ]
+
+[node name="Visual" type="Node2D" parent="." index="1"]
+
+_sections_unfolded = [ "Transform" ]
+
+[node name="Skin" type="Sprite" parent="Visual" index="0"]
+
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 160, 140, 80, 140 )
+_sections_unfolded = [ "Region" ]
+
+[node name="WeaponPos" type="Position2D" parent="Visual" index="1"]
+
+position = Vector2( 21.4496, 6.35543 )
+
+[node name="Weapon" parent="Visual/WeaponPos" index="0" instance=ExtResource( 2 )]
+
+_sections_unfolded = [ "Transform" ]
+
+[node name="Collision" type="CollisionShape2D" parent="." index="2"]
+
+position = Vector2( 2.44351, -1.62901 )
+shape = SubResource( 1 )
+
+

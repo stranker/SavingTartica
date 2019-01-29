@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Objects/Weapons/Bullets/ShotgunBullet.tscn" type="PackedScene" id=1]
+[ext_resource path="res://weapons.png" type="Texture" id=2]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "Weapon.gd"
+script/source = "extends Node2D
+
+export (PackedScene) var bullet
+export (int) var damage
+export (float) var timeBetweenShoots
+var canAttack = true
+var player = null
+
+func _ready():
+	$ShootTimer.wait_time = timeBetweenShoots
+	pass
+
+func attack():
+	if canAttack:
+		canAttack = false
+		$ShootTimer.start()
+		create_bullet()
+	pass
+
+func create_bullet():
+	if bullet:
+		var b = bullet.instance()
+		get_tree().root.call_deferred(\"add_child\",b)
+		b.set_damage(damage)
+		b.scale.x = player.facingDirection
+		b.position = $Pos.global_position
+	pass
+
+func _on_ShootTimer_timeout():
+	canAttack = true
+	pass # replace with function body
+"
+_sections_unfolded = [ "Resource" ]
+
+[node name="Weapon" type="Node2D"]
+
+position = Vector2( 44.0127, -5.72165 )
+script = SubResource( 1 )
+bullet = ExtResource( 1 )
+damage = 1
+timeBetweenShoots = 0.6
+
+[node name="Skin" type="Sprite" parent="." index="0"]
+
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 380, 200, 120, 50 )
+_sections_unfolded = [ "Region" ]
+
+[node name="Pos" type="Position2D" parent="." index="1"]
+
+position = Vector2( 62.0652, -14.0187 )
+
+[node name="ShootTimer" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+
+[connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
+
+
