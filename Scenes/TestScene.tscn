@@ -39,26 +39,10 @@ shape = SubResource( 1 )
 
 [node name="Penguin" parent="." index="2" instance=ExtResource( 3 )]
 
-position = Vector2( 649.223, 486.791 )
+position = Vector2( 367.626, 569.774 )
 
 [node name="Human" parent="." index="3" instance=ExtResource( 4 )]
 
-position = Vector2( -17.1929, 621.195 )
-
-[node name="Human2" parent="." index="4" instance=ExtResource( 4 )]
-
-position = Vector2( 160.122, 593.377 )
-
-[node name="Human3" parent="." index="5" instance=ExtResource( 4 )]
-
-position = Vector2( 1125.3, 627.902 )
-
-[node name="Human4" parent="." index="6" instance=ExtResource( 4 )]
-
-position = Vector2( 1296.35, 586.137 )
-
-[node name="Human5" parent="." index="7" instance=ExtResource( 4 )]
-
-position = Vector2( 1474.88, 622.401 )
+position = Vector2( 150.133, 607.591 )
 
 

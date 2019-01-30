@@ -4,13 +4,23 @@
 
 [sub_resource type="GDScript" id=1]
 
+resource_name = "Iglu.gd"
 script/source = "extends Area2D
+
+export (int) var health
 
 func _ready():
 	Global.iglu = self
-	pass"
+	pass
 
-[node name="Iglu" type="Area2D"]
+func take_damage(val):
+	health -= val
+	print(health)"
+_sections_unfolded = [ "Resource" ]
+
+[node name="Iglu" type="Area2D" groups=[
+"Iglu",
+]]
 
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -20,6 +30,7 @@ angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
 script = SubResource( 1 )
+health = 10
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
@@ -30,6 +41,6 @@ texture = ExtResource( 1 )
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." index="1"]
 
 build_mode = 0
-polygon = PoolVector2Array( -94.7334, 104.841, -184.865, 66.0867, -157.986, -0.702782, -23.5923, -103.331, 87.1805, -103.331, 151.494, -48.8815, 189.808, 48.9821, 120.206, 91.237 )
+polygon = PoolVector2Array( -94.0374, 90.1934, -166.986, 64.7965, -143.751, 1.57434, -27.0328, -83.8026, 83.2007, -89.2061, 130.212, -43.2755, 169.118, 48.5857, 117.243, 92.3548 )
 
 
