@@ -28,10 +28,10 @@ func attack():
 func create_bullet():
 	if bullet:
 		var b = bullet.instance()
-		call_deferred(\"add_child\",b)
+		get_tree().root.call_deferred(\"add_child\",b)
 		b.set_damage(damage)
 		b.scale.x = player.facingDirection
-		b.global_position = $Pos.position
+		b.position = $Pos.global_position
 	pass
 
 func _on_ShootTimer_timeout():
@@ -40,7 +40,7 @@ func _on_ShootTimer_timeout():
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="Weapon" type="Node2D" index="0"]
+[node name="Weapon" type="Node2D"]
 
 position = Vector2( 44.0127, -5.72165 )
 script = SubResource( 1 )
