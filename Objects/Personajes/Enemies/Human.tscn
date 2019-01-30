@@ -12,6 +12,7 @@ enum STATES {WALKING, ATTACKING}
 
 export (int) var speed
 export (int) var damage
+export (int) var health
 export (STATES) var currentState
 
 var velocity = Vector2()
@@ -101,8 +102,11 @@ func enter_walking_instance():
 	$AttackTimer.stop()
 	pass
 
-
-"
+func take_damage(val):
+	health -= val
+	if health <= 0:
+		queue_free()
+	pass"
 _sections_unfolded = [ "Resource" ]
 
 [sub_resource type="CircleShape2D" id=3]
@@ -121,7 +125,9 @@ custom_solver_bias = 0.0
 radius = 21.4615
 height = 20.0
 
-[node name="Human" type="KinematicBody2D" index="0"]
+[node name="Human" type="KinematicBody2D" groups=[
+"Enemy",
+]]
 
 input_pickable = false
 collision_layer = 3076
@@ -131,6 +137,7 @@ script = SubResource( 1 )
 _sections_unfolded = [ "Collision" ]
 speed = 50
 damage = 1
+health = 2
 currentState = null
 
 [node name="AttackDetector" type="Area2D" parent="." index="0"]
